@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef AI - Cooking Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #FF6B35, #FFB74D);
+            min-height: 100vh;
+        }
+        
+        .phone-container {
+            max-width: 375px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #FF6B35, #FFB74D);
+            color: white;
+            padding: 60px 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .voice-button {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+        
+        .voice-button:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s;
+        }
+        
+        .mic-icon {
+            font-size: 32px;
+            color: #FF6B35;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .greeting {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .recipe-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .recipe-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .recipe-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .recipe-time {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .nav-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .nav-item.active {
+            color: #FF6B35;
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .nav-text {
+            font-size: 12px;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="header">
+            <div class="voice-button" onclick="startVoice()">
+                <div class="mic-icon">🎤</div>
+            </div>
+            <p>Talk with me</p>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                <h2>Good morning, Sarah!</h2>
+                <p>Your AI cooking assistant is ready to help!</p>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Daily Recipe Pick</h3>
+                <div class="recipe-card" onclick="selectRecipe('Spicy Garlic Noodles')">
+                    <div class="recipe-title">🍜 Spicy Garlic Noodles</div>
+                    <div class="recipe-time">25 min • Easy • ⭐ 4.8</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h3 class="section-title">Trending Recipes</h3>
+                <div class="recipe-card" onclick="selectRecipe('Mediterranean Chicken')">
+                    <div class="recipe-title">🐔 Mediterranean Chicken</div>
+                    <div class="recipe-time">30 min • Medium • ⭐ 4.6</div>
+                </div>
+                <div class="recipe-card" onclick="selectRecipe('Vegetable Stir Fry')">
+                    <div class="recipe-title">🥬 Vegetable Stir Fry</div>
+                    <div class="recipe-time">15 min • Easy • ⭐ 4.4</div>
+                </div>
+            </div>
+            
+            <div class="status">
+                <p>🎉 Your Chef AI app is working!</p>
+                <p>This is a preview of your React Native app</p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-text">Home</div>
+            </div>
+            <div class="nav-item" onclick="showSection('search')">
+                <div class="nav-icon">🔍</div>
+                <div class="nav-text">Search</div>
+            </div>
+            <div class="nav-item" onclick="showSection('mealplan')">
+                <div class="nav-icon">📅</div>
+                <div class="nav-text">Meal Plan</div>
+            </div>
+            <div class="nav-item" onclick="showSection('shopping')">
+                <div class="nav-icon">🛒</div>
+                <div class="nav-text">Shopping</div>
+            </div>
+            <div class="nav-item" onclick="showSection('profile')">
+                <div class="nav-icon">👤</div>
+                <div class="nav-text">Profile</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function startVoice() {
+            alert('🎤 Voice Assistant: "Hello! I\'m your AI cooking assistant. How can I help you today?"');
+        }
+        
+        function selectRecipe(recipe) {
+            alert(`🍳 Selected: ${recipe}\n\nThis would open the recipe detail screen with:\n• Ingredients list\n• Step-by-step instructions\n• Voice cooking guidance\n• Shopping list integration`);
+        }
+        
+        function showSection(section) {
+            const sections = {
+                search: '🔍 Search Screen: Recipe discovery with voice search and categories',
+                mealplan: '📅 Meal Planner: Calendar-based meal organization',
+                shopping: '🛒 Shopping List: Smart grocery management',
+                profile: '👤 Profile: Dietary preferences and settings'
+            };
+            alert(sections[section]);
+        }
+    </script>
+</body>
+</html>
